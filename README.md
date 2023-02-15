@@ -1,6 +1,13 @@
-# Parisians
+![Parisians Logo](https://user-images.githubusercontent.com/68670157/219038073-36568985-f343-4401-8909-6e848c6127b7.jpg)
+
+# Parisians!
 
 A cute sim of Paris with autonomous pedestrians for your SBC projects.
+
+- :zap: Light Weight!
+- :monkey: Interactive!
+- :city_sunset: Visually Engaging!
+- :walking_woman: Completely Autonomous!
 
 https://user-images.githubusercontent.com/68670157/218994312-12538e5d-5171-4b94-a207-2348b8384e81.mp4
 
@@ -15,9 +22,9 @@ https://user-images.githubusercontent.com/68670157/218994312-12538e5d-5171-4b94-
 * https://pypi.org/project/opencv-python/
 
 #### Building non-packaged Assets
-Due to their size, Mara.png heatmap_buildings.png, and heatmap_roads.png do not come with this git repository. They must be created locally with code. This is done with the excellent git repo [prettymaps by marceloprates](https://github.com/marceloprates/prettymaps)
+Due to their size, Mara.png, heatmap_buildings.png, and heatmap_roads.png do not come with this git repository. They must be created locally with code. This is done with the excellent git repo [prettymaps by marceloprates](https://github.com/marceloprates/prettymaps)
 
-To create the maps the script use cartographer.py which pulls it's data from [openstreetmaps](https://www.openstreetmap.org/). cartographer.py contains a function: default() which builds the bare minimum you need to begin.
+To create the maps use the script cartographer.py which pulls it's data from [openstreetmaps](https://www.openstreetmap.org/). cartographer.py contains a function: default() which builds the bare minimum you need to begin.
 ```python
 def defaults():
     #Generate Main Map
@@ -33,7 +40,7 @@ def defaults():
     build_map.vinegar()
 ```
 
-Because the resulting maps are very large files, *Parisians* uses [tiled rendering](https://en.wikipedia.org/wiki/Tiled_rendering) to manage ram overflow. These tiles are saved in the .tiles directory and are created from mara.png with the sizzors.py script.
+Because the resulting maps are very large files, *Parisians* uses [tiled rendering](https://en.wikipedia.org/wiki/Tiled_rendering) to manage ram overflow. These tiles are saved in the ./tiles directory and are created from mara.png with the sizzors.py script.
 
 ```bash
 Python3 cartographer.py
@@ -164,17 +171,18 @@ gallery.add(my_banner)
 #### How does the Path Finding Work?
 The parisian class find it's way across the map using the following formala.
 
-parisian.position = The vector of the maximum value with the matrix *f* where... 
-*f = [g + h] + p*
+parisian.position = The vector of the maximum value with the matrix *f* where ...
 
-- *g* is a slice of a matrix with high scoring in bounds pixels (roads, bridges, buildings, etc) and low scoring out of bounds pixels (water, forests, railways, etc).
+> <div><img src="https://latex.codecogs.com/svg.image?\begin{bmatrix}f\end{bmatrix}=\begin{vmatrix}(\begin{bmatrix}g\end{bmatrix}+\begin{bmatrix}h\end{bmatrix})\end{vmatrix}+\begin{bmatrix}p\end{bmatrix}" style="background-color:lightgray;" /></div>
+
+- *g* is a slice of a matrix with in bounds pixels which are high scoring (roads, bridges, buildings, etc) and out of bounds pixels which are low scoring (water, forests, railways, etc).
 - *h* is a matrix where pixels in the direction of movement, that is the angle of the auto-walkers velocity vector, are scored highest.
 - *p* is a matrix of non-repeating pseudo-random values.
 - *f* is the normalised sum of the above.
 
 Note : The size of all the matricies is the inscribed square of a circle with radius parisian.radius. (r * 2 + 1)
 
-To summarise, *f*, or f-cost, is a noisy matrix that gives higher scores to pixels that are roads or buildings (parisian.heatmap) and higher scores to pixels that maintain momentum. Parisians "path-find" by setting it's position to the vector of the highest pixel of *f* which, importantly, will most likely be on the road in front of them.
+To summarise, *f*, or f-cost, is a noisy matrix that gives higher scores to pixels that are roads or buildings (parisian.heatmap) and higher scores to pixels that maintain momentum. Parisians "path-find" by setting it's position to the vector of the highest scoring pixel of *f* which, importantly, will most likely be on the road in front of them.
 
 ![example_pathfinding](https://user-images.githubusercontent.com/68670157/218995453-526b7403-6901-4d3a-844d-16f22f19600a.png)
 
@@ -193,7 +201,7 @@ For Single Board Computer applications it is possible to improve performance by 
 Remember, the internal clocks of these objects are out of phase with one another. This means that even if each objects calculations per frame are low, something will always be moving.
 
 #### Using a Touch Screen.
-For my build I had success with the [Waveshare 10.1inch Resistive Touch Screen LCD.](https://www.waveshare.com/wiki/10.1inch_HDMI_LCD). I used [this tutorial](https://www.waveshare.com/wiki/10.1inch_HDMI_LCD) to configure the touch screen. However, I found clicking clumsy with the touchscreens I tried. To resolve this I modified the gameloop of main.py such that, rather than clicking to move the camera, the camera steady only within a 200px safe zone in the center of the screen. This way, a simple tap near the edge of the touch screen to jump the mouse to that point will be sufficient to move the camera. Tapping the centre again will steady the camera.
+For my build I had success with the [Waveshare 10.1inch Resistive Touch Screen LCD](https://www.waveshare.com/wiki/10.1inch_HDMI_LCD). I used [this tutorial](https://www.waveshare.com/wiki/10.1inch_HDMI_LCD) to configure the touch screen. However, I found clicking clumsy, at least with the touchscreens I tried. To resolve this I modified the gameloop of main.py such that, rather than clicking to move the camera, the camera steady only within a 200px safe zone in the center of the screen. This way, a simple tap near the edge of the touch screen to jump the mouse to that point will be sufficient to move the camera. Tapping the centre again will steady the camera.
 ```python
 mopos = pygame.mouse.get_pos()
 cx, cy = camera #Camera global location
@@ -202,11 +210,11 @@ if not (mopos[0] in range(cx - 200, cx + 200) and mopos[1] in range(cy - 200, cy
 ```
 
 #### Running at startup (linux).
-I found I needed the [Desktop Version of Raspberry PI OS](https://www.raspberrypi.com/documentation/computers/os.html).I had the most success placing the following code in my .bashrc file at the bottom.
+I found I needed the [Desktop Version of Raspberry PI OS](https://www.raspberrypi.com/documentation/computers/os.html). I had the most success placing the following code in my .bashrc file at the bottom.
 ```bash
 sleep 5
-cd /absolute/path/to/script
-python3 Raspoti.py
+cd /absolute/path/to/parisians
+python3 main.py
 ```
 
 Then I ensured terminal booted on launch
@@ -218,6 +226,12 @@ reboot
 
 Having terminal open appeared to be "necessary" to make the hotkeys trigger.
 I also found that this method ensured that wifi and other auxiliaries would be operation before the loop would run.
+
+## Further Reading
+
+- For more on seeking and autonomous vehicles see [Nature of Code Chapter 6 by Daniel Shiffman](https://natureofcode.com/book/chapter-6-autonomous-agents/).
+- [chrieke](https://github.com/chrieke) has made a [fork of prettymaps](https://github.com/chrieke/prettymapp) that simplifies the syntax and has a [webpage with UI for map generation](https://mikael-codes-prettymapp-streamlit-prettymappapp-ccs1so.streamlit.app/).
+- I enjoyed [Sebastian Lague's](https://github.com/SebLague) [tutorial on A* Pathfinding](https://github.com/SebLague/Pathfinding).
 
 ## MIT License
 
