@@ -1,5 +1,9 @@
 # Parisians
 
+A cute sim of Paris with autonomous pedestrians for your SBC projects.
+
+https://user-images.githubusercontent.com/68670157/218994312-12538e5d-5171-4b94-a207-2348b8384e81.mp4
+
 ## Dependencies
 
 #### Required Libraries
@@ -171,6 +175,8 @@ parisian.position = The vector of the maximum value with the matrix *f* where...
 Note : The size of all the matricies is the inscribed square of a circle with radius parisian.radius. (r * 2 + 1)
 
 To summarise, *f*, or f-cost, is a noisy matrix that gives higher scores to pixels that are roads or buildings (parisian.heatmap) and higher scores to pixels that maintain momentum. Parisians "path-find" by setting it's position to the vector of the highest pixel of *f* which, importantly, will most likely be on the road in front of them.
+
+https://user-images.githubusercontent.com/68670157/218994770-38171ec0-814c-4994-afc7-955769161400.mp4
 
 ## Using a Raspberry PI
 
