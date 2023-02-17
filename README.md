@@ -175,6 +175,8 @@ This simulation of Paris is designed to be a SBC "wall peice", on display and lo
 
 A Parisian class is given a heatmap of the roads and building when constructed. A Parisian also has an internal clock which increments each frame. Each time the parisians clock overflows the parisians checks the heatmap to search, within a specified radius, for pixels on roads and in buildings. Second, a Parisian creates a vision cone, of the same radius, in the direction it is currently orientated. A parisian will "prefer" a pixel that is inside it's vision cone (that is, will prefer to keep going straight). Note: Just these two steps combine essentially create a weak Dijkstra, finding the shortest path ahead of them, following the streets and roads, only turning when something like a T-Intersection or sharp turn is before them. 
 
+![example_pathfind_2](https://user-images.githubusercontent.com/68670157/219524189-f47fc311-8e0f-4622-90a8-0472caeaf5c4.jpg)
+
 To add a little humanity to the pedestrians, I added a non-repeating noisy matrix to the vision cone. This improved the behaviour,  leading them to enter and exit buildings, take turns they would otherwise ignore, and even turn around like they forgot something at home. By adjusting the weights and normalizing the output I was able to achieve a result that maintains the illusion of choice (through a noisy matrix) without sacrificing intentionality (using a heatmap and a lightcone).
 
 The parisian class find it's way across the map using the following formala.
