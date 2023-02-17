@@ -170,30 +170,30 @@ gallery.add(my_banner)
 ```
 
 ## How does the Path Finding Work?
-This simulation of Paris is designed to be a SBC "wall peice", on display and looping forever. I wanted autonomous pedestrians with a walk that looks "intentional"; the illusion of "looking like they had somewhere to be". Hard coding in a finite set of predefined routes or using a hamiltonian circuit would eventually reveal a pattern to the audience, appearing robotic and breaking the illusion that the pedestrians had choice.
+This simulation of Paris is designed to be a SBC "wall piece": on display and looping forever. I wanted autonomous pedestrians with a walk that looks "intentional"; the illusion of "looking like they had somewhere to be". Hard coding in a finite set of predefined routes or using a hamiltonian circuit would eventually reveal a pattern to the audience, appearing robotic and breaking the illusion that the pedestrians had choice.
 
 *My approach was to combine a [random walk algorithm](https://en.wikipedia.org/wiki/Random_walk) with a pseudo [Dijkstra search](https://brilliant.org/wiki/dijkstras-short-path-finder/).* 
 
-A Parisian class is given a heatmap of the roads and building when constructed. A Parisian also has an internal clock which increments each frame. Each time the parisians clock overflows the parisians checks the heatmap to search, within a specified radius, for pixels on roads and in buildings. Second, a Parisian creates a vision cone, of the same radius, in the direction it is currently orientated. A parisian will "prefer" a pixel that is inside it's vision cone (that is, will prefer to keep going straight). Note: Just these two steps combine essentially create a weak Dijkstra, finding the shortest path ahead of them, following the streets and roads, only turning when something like a T-Intersection or sharp turn is before them. 
+A parisian class is given a heatmap of the roads and buildings when constructed. A parisian also has an internal clock which increments each frame. Each time the parisian's clock overflows the parisian checks the heatmap to search, within a specified radius, for pixels on roads and in buildings. Second, a parisian creates a vision cone, of the same radius, in the direction it is currently orientated. A parisian will "prefer" a pixel that is inside it's vision cone (that is, will prefer to keep going straight). Note: Just these two steps combined essentially creates a weak Dijkstra: finding the shortest path ahead of them, following the streets and roads, only turning when something like a T-Intersection or sharp turn is before them. 
 
 ![example_pathfind_2](https://user-images.githubusercontent.com/68670157/219524189-f47fc311-8e0f-4622-90a8-0472caeaf5c4.jpg)
 
 To add a little humanity to the pedestrians, I added a non-repeating noisy matrix to the vision cone. This improved the behaviour,  leading them to enter and exit buildings, take turns they would otherwise ignore, and even turn around like they forgot something at home. By adjusting the weights and normalizing the output I was able to achieve a result that maintains the illusion of choice (through a noisy matrix) without sacrificing intentionality (using a heatmap and a lightcone).
 
-The parisian class find it's way across the map using the following formala.
+The parisian class finds its way across the map using the following formula.
 
-parisian.position = The vector of the maximum value within the matrix *f* where ...
+parisian.position = The vector of the maximum value from the matrix *f* where ...
 
 > <div><img src="https://latex.codecogs.com/svg.image?\begin{bmatrix}f\end{bmatrix}=\begin{vmatrix}(\begin{bmatrix}g\end{bmatrix}+\begin{bmatrix}h\end{bmatrix})\end{vmatrix}+\begin{bmatrix}p\end{bmatrix}" style="background-color:lightgray;" /></div>
 
-- *g* is a slice of a matrix with in bounds pixels which are high scoring (roads, bridges, buildings, etc) and out of bounds pixels which are low scoring (water, forests, railways, etc).
-- *h* is a matrix where pixels in the direction of movement, that is the angle of the auto-walkers velocity vector, are scored highest.
+- *g* is a slice of a matrix with in-bounds pixels which are high scoring (roads, bridges, buildings, etc) and out-of-bounds pixels which are low scoring (water, forests, railways, etc).
+- *h* is a matrix where pixels in the direction of movement, i.e. the angle of the pedestrian's velocity vector, are scored highest.
 - *p* is a matrix of non-repeating pseudo-random values.
 - *f* is the normalised sum of the above.
 
 Note : The size of all the matricies is the inscribed square of a circle with radius parisian.radius. (r * 2 + 1)
 
-To summarise, *f*, or f-cost, is a noisy matrix that gives higher scores to pixels that are roads or buildings (parisian.heatmap) and higher scores to pixels that maintain momentum. Parisians "path-find" by setting it's position to the vector of the highest scoring pixel of *f* which, importantly, will most likely be on the road in front of them.
+To summarise, *f*, or f-cost, is a noisy matrix that gives higher scores to pixels that are roads or buildings (parisian.heatmap) and higher scores to pixels that maintain momentum. Parisians "path-find" by setting their position to the vector of the highest scoring pixel of *f* which, importantly, will most likely be on the road in front of them.
 
 ![example_pathfinding](https://user-images.githubusercontent.com/68670157/219524707-a43bb81b-06ac-457b-b5b5-6cfa75449929.jpg)
 
