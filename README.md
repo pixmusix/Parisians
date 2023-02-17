@@ -194,7 +194,7 @@ Note : The size of all the matricies is the inscribed square of a circle with ra
 
 To summarise, *f*, or f-cost, is a noisy matrix that gives higher scores to pixels that are roads or buildings (parisian.heatmap) and higher scores to pixels that maintain momentum. Parisians "path-find" by setting it's position to the vector of the highest scoring pixel of *f* which, importantly, will most likely be on the road in front of them.
 
-![example_pathfinding](https://user-images.githubusercontent.com/68670157/218995453-526b7403-6901-4d3a-844d-16f22f19600a.png)
+![example_pathfinding](https://user-images.githubusercontent.com/68670157/219524707-a43bb81b-06ac-457b-b5b5-6cfa75449929.jpg)
 
 ## Using a Raspberry PI
 
