@@ -14,12 +14,12 @@ https://user-images.githubusercontent.com/68670157/218994312-12538e5d-5171-4b94-
 ## Dependencies
 
 #### Required Libraries
-* https://pypi.org/project/pygame/
-* https://pypi.org/project/pillow/
-* https://pypi.org/project/numpy/
-* https://pypi.org/project/matplotlib/
-* https://pypi.org/project/prettymaps/
-* https://pypi.org/project/opencv-python/
+* [pygame](https://pypi.org/project/pygame/) version==2.1.2
+* [pillow](https://pypi.org/project/pillow/) version==8.3.1
+* [numpy](https://pypi.org/project/numpy/) version==1.23.5
+* [matplotlib](https://pypi.org/project/matplotlib/) version==3.6.2
+* [prettymaps](https://pypi.org/project/prettymaps/) version==0.1.3
+* [openvc-python](https://pypi.org/project/opencv-python/) version==4.5.3.56
 
 #### Building non-packaged Assets
 Due to their size, Mara.png, heatmap_buildings.png, and heatmap_roads.png do not come with this git repository. They must be created locally with code. This is done with the excellent git repo [prettymaps by marceloprates](https://github.com/marceloprates/prettymaps)
